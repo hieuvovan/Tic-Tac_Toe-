@@ -1,57 +1,53 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import reportWebVitals from "./reportWebVitals";
 
-function Square(props){
-    return(
-      <button
-       className="square" 
-       onClick={() => props.onClick()}
-      >
-        {props.value}
-      </button>
-    )
-  }
+function Square(props) {
+  return (
+    <button className="square" onClick={() => props.onClick()}>
+      {props.value}
+    </button>
+  );
+}
 
-
-class Board extends React.Component{
-  constructor(props){
+class Board extends React.Component {
+  constructor(props) {
     super(props);
     this.state = {
       squares: Array(9).fill(null),
       xIsNext: true,
     };
   }
-  renderSquare(i){
-    return (<Square 
-    value={this.state.squares[i]}
-    onClick={() => this.handleClick(i)}/>
+  renderSquare(i) {
+    return (
+      <Square
+        value={this.state.squares[i]}
+        onClick={() => this.handleClick(i)}
+      />
     );
   }
 
-  handleClick(i){
+  handleClick(i) {
     const squares = this.state.squares.slice();
-    if(checkWinner(squares)||squares[i]){
+    if (checkWinner(squares) || squares[i]) {
       return;
     }
-    squares[i] = this.state.xIsNext?"X":"O";
-    this.setState(
-      {
-      squares:squares,
+    squares[i] = this.state.xIsNext ? "X" : "O";
+    this.setState({
+      squares: squares,
       xIsNext: !this.state.xIsNext,
-      });
+    });
   }
-  render(){
+  render() {
     const winner = checkWinner(this.state.squares);
     let status;
-    if(winner)
-    {
+    if (winner) {
       status = "Winner is :" + winner;
-    }else{
-      status = "Next player is: "+ (this.state.xIsNext ? "X" : "O");
+    } else {
+      status = "Next player is: " + (this.state.xIsNext ? "X" : "O");
     }
-    return(
+    return (
       <div>
         <div className="status">{status}</div>
         <div className="board-row">
@@ -74,48 +70,45 @@ class Board extends React.Component{
   }
 }
 
-class Game extends React.Component{
-  render(){
-    return(
+class Game extends React.Component {
+  render() {
+    return (
       <div className="game">
         <div className="game-board">
-          <Board/>
+          <Board />
         </div>
-        <div className="game-info">
-
-        </div>
+        <div className="game-info"></div>
       </div>
-    )
+    );
   }
 }
 
-function checkWinner(squares){
-    const lines = [
-      [0,1,2],
-      [3,4,5],
-      [6,7,8],
-      [0,4,8],
-      [3,4,6],
-      [0,3,6],
-      [1,4,7],
-      [2,5,8],
-    ];
+function checkWinner(squares) {
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 4, 8],
+    [3, 4, 6],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+  ];
 
-    for(let i = 0;i<lines.length;i++)
-    {
-      const [a,b,c] = lines[i];
-      if(squares[a]&&squares[a]===squares[b]&&squares[a]===squares[c]){
-        return squares[a];
-      }
+  for (let i = 0; i < lines.length; i++) {
+    const [a, b, c] = lines[i];
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      return squares[a];
     }
-    return null;
+  }
+  return null;
 }
 
 ReactDOM.render(
   <React.StrictMode>
     <Game />
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function
